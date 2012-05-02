@@ -1,0 +1,32 @@
+%{
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include "tree.h"
+%}
+
+%term ADD_OP=1 MUL_OP=2 AND_OP=3 LEQ_OP=4 NEQ_OP=5
+%term NOT_OP=6 NEG_OP=7 PTR_OP=8 RET_OP=9
+%term CNS_USE=10 VAR_USE=11
+
+%%
+
+reg:	ADD_OP(reg,reg)	#1#	printf("\tmovq $%d, %%rax\n\taddq $%d, %%rax\n", bnode->kids[0]->value, bnode->kids[1]->value);
+reg:	MUL_OP(reg,reg)	#1#	
+reg:	AND_OP(reg,reg)	#1#	
+reg:	LEQ_OP(reg,reg)	#1#	
+reg:	NEQ_OP(reg,reg)	#1#	
+reg:	NOT_OP(reg)		#1#	
+reg:	NEG_OP(reg)		#1#	
+reg:	PTR_OP(reg)		#1#	
+reg:	RET_OP(reg)		#1#	printf("\tret\n");
+reg:	VAR_USE			#0
+reg:	CNS_USE			#0
+
+
+
+reg:	ADD_OP(reg,reg)	#1#
+reg:	ADD_OP(reg,imm)	#1#	
+reg:	ADD_OP(imm,reg)	#1#
+reg:	ADD_OP(imm,imm)	#1#
+
